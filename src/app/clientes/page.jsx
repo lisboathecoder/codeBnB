@@ -30,20 +30,20 @@ const campos = [
     {
         name: 'celular',
         label: 'Celular',
-        optional: true,
+        opcional: true,
     },
 ];
 export default async function Clientes({ searchParams }) {
-    const busca = ({ busca = '' } = await searchParams);
+    const { busca = '' } = await searchParams;
     const buscaMinuscula = busca.toLowerCase();
 
-    const clientes = await prisma.cliente.findMany({ orderby: { nome: 'asc' } });
-    const registros = clientes.map((cliente) =>
-        ({ ...cliente, cpf: descriptografar(item.cpf) }).filter(
+    const clientes = await prisma.cliente.findMany({ orderBy: { nome: 'asc' } });
+    const registros = clientes
+        .map((cliente) => ({ ...cliente, cpf: descriptografar(cliente.cpf) }))
+        .filter(
             (cliente) =>
                 cliente.nome.toLowerCase().includes(buscaMinuscula) ||
                 cliente.cpf.includes(buscaMinuscula),
-        ),
-    );
-    <Crud titulo="Clientes" {...{ colunas, campos, registros, salvar, excluir, busca }}></Crud>;
+        );
+    return <Crud titulo="Clientes" {...{ colunas, campos, registros, salvar, excluir, busca }} />;
 }

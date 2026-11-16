@@ -1,6 +1,7 @@
 import './globals.css';
 import Header from '@components/Header';
 import { App } from 'antd';
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 
 export const metadata = {
     title: 'Nextjs',
@@ -11,10 +12,12 @@ export default function RootLayout({ children }) {
     return (
         <html lang="pt-BR">
             <body>
-                <App>
-                    <Header/>
+                <>
+                    <App>
+                        <Header />
                         <main>{children}</main>
-                </App>
+                    </App>
+                </>
             </body>
         </html>
     );

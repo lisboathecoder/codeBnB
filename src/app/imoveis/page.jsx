@@ -33,9 +33,9 @@ const colunas = [
     },
 ];
 export default async function Imoveis() {
-    const [imoveis, clientes] = await Promisse.all([
-        prisma.imovel.findMany({ orderBy: { modelo: 'asc' }, include: { cliente: true } }),
-        prisma.cliente.findMany({ orderBy: { modelo: 'asc' } }),
+    const [imoveis, clientes] = await Promise.all([
+        prisma.imovel.findMany({ orderBy: { endereco: 'asc' }, include: { cliente: true } }),
+        prisma.cliente.findMany({ orderBy: { nome: 'asc' } }),
     ]);
 
     const registros = imoveis.map(({ cliente, ...imovel }) => ({
@@ -71,7 +71,7 @@ export default async function Imoveis() {
         {
             name: 'cliente_nome',
             label: 'Cliente',
-            opcoes: opcoes.map((c) => ({ value: c.id, label: c.nome })),
+            opcoes: clientes.map((c) => ({ value: c.id, label: c.nome })),
         },
     ];
     return <Crud titulo="Imovéis" {...{ colunas, campos, registros, salvar, excluir }} />;

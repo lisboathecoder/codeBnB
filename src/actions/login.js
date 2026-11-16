@@ -10,7 +10,7 @@ const TEMPO_VIDA = 60 * 60;
 export async function entrar({ nome, senha }) {
     let usuario;
     try {
-        const usuario = await prisma.usuario.findUnique({ where: { nome } });
+        usuario = await prisma.usuario.findUnique({ where: { nome } });
     } catch {
         return { erro: 'Erro ao conectar com o banco' };
     }
@@ -24,7 +24,11 @@ export async function entrar({ nome, senha }) {
     });
 
     const cookieStore = await cookies();
-    cookieStore.set('token', token, { httpOnly: true, sameSite: 'lax', maxAge: TEMPO_VIDA });
+    cookieStore.set('token', token, {
+        httpOnly: true,
+        sameSite: 'lax',
+        maxAge: TEMPO_VIDA,
+    });
     redirect('/inicio');
 }
 

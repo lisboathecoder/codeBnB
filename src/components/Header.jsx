@@ -7,8 +7,6 @@ import Link from 'next/link';
 const estilo = { padding: 16, borderBottom: '1px solid lightgray' };
 
 export default async function Header() {
-    const cookieStore = await cookies();
-
     const token = (await cookies()).get('token')?.value;
 
     const usuario = token && jwt.decode(token);

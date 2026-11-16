@@ -12,7 +12,7 @@ export default function Crud({ titulo, colunas, campos, registros, salvar, exclu
 
     function abrir(registro = {}) {
         form.resetFields();
-        form.setFieldValue(registro);
+        form.setFieldsValue(registro);
         setAberto(true);
     }
 
@@ -28,12 +28,12 @@ export default function Crud({ titulo, colunas, campos, registros, salvar, exclu
         key: 'acoes',
         render: (_, registro) => (
             <Space>
-                <Button size="small" onClick={abrir(registro)}>
+                <Button size="small" onClick={() => abrir(registro)}>
                     Editar
                 </Button>
                 <Popconfirm
                     title="Excluir este registro"
-                    onConfirm={executar(excluir, registro.id)}>
+                    onConfirm={() => executar(excluir, registro.id)}>
                     <Button size="large" danger>
                         Excluir
                     </Button>
@@ -56,7 +56,7 @@ export default function Crud({ titulo, colunas, campos, registros, salvar, exclu
                         placeholder="Buscar por nome ou CPF"
                         enterButton="Buscar"
                         allowClear
-                        onSearch={(texto) => router.push(`?busca=&{encodeURIComponent(texto)}`)}
+                        onSearch={(texto) => router.push(`?busca=${encodeURIComponent(texto)}`)}
                     />
                 )}
                 <Table
@@ -73,7 +73,7 @@ export default function Crud({ titulo, colunas, campos, registros, salvar, exclu
                     cancelText="Cancelar"
                     forceRender>
                     <Form
-                        form="form"
+                        form={form}
                         layout="vertical"
                         onFinish={(dados) => executar(salvar, dados)}>
                         <Form.Item name="id" hidden>
@@ -86,7 +86,6 @@ export default function Crud({ titulo, colunas, campos, registros, salvar, exclu
                                 label={label}
                                 rules={[{ required: !opcional, message: 'Campo obrigatório' }]}
                                 normalize={(valor) => valor || null}>
-                                {' '}
                                 {opcoes ? <Select options={opcoes} /> : <Input type={tipo} />}
                             </Form.Item>
                         ))}

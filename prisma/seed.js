@@ -49,7 +49,7 @@ const dados = {
             comodos: 'Sala, cozinha e 2 quartos',
             quantidade_hospedes: 4,
             valor: 250.0,
-            disponivel: true,
+            disponivel: false,
             cliente_id: 1,
         },
         {
@@ -58,7 +58,7 @@ const dados = {
             comodos: 'Sala, cozinha e 3 quartos',
             quantidade_hospedes: 6,
             valor: 350.0,
-            disponivel: true,
+            disponivel: false,
             cliente_id: 2,
         },
         {
@@ -67,21 +67,24 @@ const dados = {
             cep: '16349-785',
             quantidade_hospedes: 8,
             valor: 500.0,
-            disponivel: true,
+            disponivel: false,
             cliente_id: 3,
         },
     ],
     aluguel: [
         {
-            data: new Date('2026-12-05'),
+            data_inicio: new Date('2026-12-05'),
+            data_fim: new Date('2026-12-10'),
             imovel_id: 1,
         },
         {
-            data: new Date('2026-12-12'),
+            data_inicio: new Date('2026-12-12'),
+            data_fim: new Date('2026-12-17'),
             imovel_id: 2,
         },
         {
-            data: new Date('2026-12-19'),
+            data_inicio: new Date('2026-12-19'),
+            data_fim: new Date('2026-12-24'),
             imovel_id: 3,
         },
     ],

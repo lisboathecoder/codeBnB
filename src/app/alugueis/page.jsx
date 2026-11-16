@@ -1,15 +1,12 @@
-import { excluir, salvar } from '@actions/aluguels';
+import { excluir, salvar } from '@actions/alugueis';
 import Crud from '@components/Crud';
 import { descriptografar } from '@lib/cripto';
 import { prisma } from '@lib/prisma';
 
 const colunas = [
-    { title: 'Data', dataIndex: 'data' },
-    { title: 'Endereço', dataIndex: 'imovel_endereco' },
-    { title: 'CEP', dataIndex: 'imovel_cep' },
-    { title: 'Quantidade de Hóspedes', dataIndex: 'imovel_quantidades_hospedes' },
-    { title: 'Comôdos', dataIndex: 'imovel_comodos' },
-    { title: 'Valor', dataIndex: 'imovel_valor' },
+    { title: 'Data de início', dataIndex: 'data_inicio' },
+    { title: 'Data de fim', dataIndex: 'data_fim' },
+    { title: 'Imóvel', dataIndex: 'imovel_endereco' },
     { title: 'Disponibilidade', dataIndex: 'imovel_disponivel' },
     { title: 'Cliente', dataIndex: 'cliente_nome' },
     { title: 'CPF', dataIndex: 'cliente_cpf' },
@@ -18,37 +15,35 @@ const colunas = [
 export default async function Alugueis() {
     const [alugueis, imoveis] = await Promise.all([
         prisma.aluguel.findMany({
-            orderBy: { data: 'asc' },
+            orderBy: { data_inicio: 'asc' },
             include: { imovel: { include: { cliente: true } } },
         }),
-        prisma.imovel.findMany({ orderBy: { modelo: 'asc' }, include: { cliente: true } }),
+        prisma.imovel.findMany({ orderBy: { endereco: 'asc' }, include: { cliente: true } }),
     ]);
 
-    const registros = alugueis.map(({ id, data, imovel_id, imovel }) => ({
+    const registros = alugueis.map(({ id, data_inicio, data_fim, imovel_id, imovel }) => ({
         id,
         imovel_id,
-        data: data.toISOString().slice(0, 10),
+        data_inicio: data_inicio.toISOString().slice(0, 10),
+        data_fim: data_fim.toISOString().slice(0, 10),
         imovel_endereco: imovel.endereco,
-        imovel_cep: imovel.cep,
-        imovel_quantidades_hospedes: imovel.quantidades_hospedes,
-        imovel_comodos: imovel.comodos,
-        imovel_valor: imovel.valor,
         imovel_disponivel: imovel.disponivel,
         cliente_nome: imovel.cliente.nome,
         cliente_cpf: descriptografar(imovel.cliente.cpf),
     }));
 
     const campos = [
-        { name: 'data', label: 'Data', tipo: 'date' },
+        { name: 'data_inicio', label: 'Data de início', tipo: 'date' },
+        { name: 'data_fim', label: 'Data de fim', tipo: 'date' },
         {
             name: 'imovel_id',
-            label: 'Imovél',
+            label: 'Imóvel',
             opcoes: imoveis.map((i) => ({
                 value: i.id,
-                label: `${i.modelo} (${i.cliente.nome})`,
+                label: `${i.endereco} (${i.cliente.nome})`,
             })),
         },
     ];
 
-    return <Crud titulo="Alugueis" {...{ colunas, campos, registros, salvar, excluir }} />;
+    return <Crud titulo="Aluguéis" {...{ colunas, campos, registros, salvar, excluir }} />;
 }

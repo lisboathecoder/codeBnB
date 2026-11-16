@@ -9,7 +9,7 @@ export default function Login() {
     return (
         <>
             <Card>
-                <title>CodeBnB - Login</title>
+                CodeBnB - Login
             </Card>
             <Form
                 layout="vertical"
